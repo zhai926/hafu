@@ -1,0 +1,100 @@
+/****************首页女性的样式*****************/
+.footer{
+	background-color: #EB5F5E;
+}
+.footer .foot-left{
+	background-color: #FAD3D4;
+}
+.footer .foot-middle{
+	background-color:#F39EA1 ;
+}
+ .color-change{
+	background-color: rgb(235, 95, 94) !important;
+} 
+.footer .foot-home{
+	background-color:#EB5F5E ;
+}
+.steps{
+	background-color: #FDF4F5;
+}
+.range{
+	background-color: #FBE1E2;
+}
+.range span{
+	background-color: #DE7C7F;
+}
+.footer-list{
+	background-color: rgba(235, 95, 94,0.7);
+}
+.steps .today-step .num{
+	color: #F4B2B1;
+}
+.steps .joy{
+	color:#747474;
+}
+.steps .joy span{
+	color: #ED8E9B;
+}
+.information .infor-right a{
+	color: #747474;
+}
+.information span{
+	color: #F7D5D5;
+}
+.information .infor-left ul li i{
+	background-color: #F39EA1;
+}
+.information .infor-left ul li:after{
+	border-color:  transparent transparent transparent  #F7D5D5;
+}
+
+.reset span{
+	background: url(../images/arrow/set.png) no-repeat center 0.05rem;
+	background-size: 95% auto;
+	color: #EB5F5D;
+}
+.photo .sex{
+	background: url(../images/arrow/woman.png) no-repeat center center;
+	background-size: 70% 70%;
+}
+.infor-right .hert{
+	background: url(../images/arrow/hert.png) no-repeat center top;
+	background-size: 20px auto;
+}
+.infor-right .good{
+	background: url(../images/arrow/good.png) no-repeat center top;
+	background-size: 20px auto;
+}
+.left-nav{
+ 	background-color: #DA5455;	
+}
+.step-con h3 span {
+	color: #E9605F;
+}
+
+/*运动数据*/
+.stepList span{
+	 color: #F7D5D5;
+}
+.moreData{
+	color:#F7D5D5 ;
+	margin-top: 0.4rem;
+	text-decoration: underline !important;
+}
+.menu-wrap{
+   background:#F7D5D5;
+}
+.active-con .active-pie .sex{
+	background: url(../images/arrow/woman.png) no-repeat center center;
+    background-size: 70% 70%;
+}
+
+.select{
+	background-color:#F39EA1;
+	color: white !important;
+}
+.step-title .nav li{
+	border:1px solid #F39EA1;
+}
+
+

@@ -1,0 +1,21 @@
+<taglib version="2.1" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
+    <description>自定义jstl</description>
+	<display-name>custom defined jstl functions</display-name>
+	<tlib-version>1.0</tlib-version>
+	<short-name>cdj</short-name>
+	<uri>/custom-defined-jstl</uri>
+
+	<function>
+		<name>filterHtmlTags</name>
+		<function-class>org.hafu.modules.utils.CustomDefinedJstl</function-class>
+		<function-signature>java.lang.String filterHtmlTags(java.lang.String)
+		</function-signature>
+		<example>${cdj:filterHtmlTags('')}</example>
+	</function>
+	<function>
+		<name>filterAndSubTags</name>
+		<function-class>org.hafu.modules.utils.CustomDefinedJstl</function-class>
+		<function-signature>java.lang.String filterHtmlTags(java.lang.String,int)</function-signature>
+		<example>${cdj:filterAndSubTags('','')}</example>
+	</function>
+</taglib>

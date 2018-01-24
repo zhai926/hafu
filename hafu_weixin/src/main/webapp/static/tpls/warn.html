@@ -1,0 +1,220 @@
+		<link rel="stylesheet" type="text/css" href="../css/normalize.css"/>
+		<script src="../js/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
+		 <script type="text/javascript">
+		 
+		 $(function(){
+		 	noread();
+		 	getBaseInfo();
+		 })
+		 function getBaseInfo(){
+			 $.getJSON('/index/getBaseInfo',function(data){
+				 var user = data.ob.user;
+				 //alert(user.toString());
+				 var relations = data.ob.relations;
+				 if(user.nickName != null && user.nickName != " "){
+					 //alert(user.nickName+"Nick名字");
+
+					// alert(user.nickName+"Nick名字");
+
+					 $(".txt #userName").text(user.nickName+" "+'发出警报，请尽快确认!确保'+relations+'平安!');
+				 }else if(user.realName != null && user.realName != ""){
+					 $(".txt #userName").text(user.realName+" "+'发出警报，请尽快确认!确保'+relations+'平安!');
+				 }else{
+					 $(".txt #relations").text(relations);
+				 }
+				 var gender = data.ob.sex;
+					if(gender == '男'){
+						$('.sex').css("background-image","url(../images/arrow/man.png)");
+				    	$('.red').css('color','#9ED7EA');
+					}else{
+						$('.sex').css("background-image","url(../images/arrow/woman.png)");
+					}
+					/* var name = data.ob.name;
+					
+					if(name != null){
+						$(".txt #userName").text(name+" "+'发出警报，请尽快确认!确保'+relations+'平安!');
+					}else{
+						$(".txt #relations").text(relations);
+					} */
+					
+			 });
+		 }
+		 //异步未读报警进来
+		 	function noread(){
+		 		$.getJSON("/alter/noread",{},function(data){
+		 			if(data.status=='success'){
+		 				if(data.ob!=null){ //有未读
+		 					$(".txt #current_alter").removeClass("ico").addClass("ico1");
+		 					$("#alter_id").val(data.ob.id);
+		 					$(".txt #alter_code").text(data.ob.code);
+		 					$(".txt #alter_day").text(data.ob.alertDate);
+		 					$(".txt #alter_type").text(data.ob.alertType==1?"自动报警":"手动报警");
+		 					$(".txt #alter_position").text(data.ob.position);
+		 					$(".txt #alter_mobile").text(data.ob.mobile);
+		 					//temFun1();//有报警直接打开
+		 				}	
+		 			}
+		 		});
+		 	}
+		 	function goToTrackPosition(){
+		 		read();
+		 		var id= $("#alter_id").val();
+		 		//alert("获取ID"+id);
+		 		window.parent.location.href="/track/position?id="+ id;
+		 	}
+		 	//读取报警
+		 	function read(){
+		 		var id = $("#alter_id").val();
+		 		$.getJSON("/alter/read",{"alterId":id},function(data){
+		 			if(data.status=='success'){
+		 				$("#current_alter").removeClass("ico1").addClass("ico");	
+		 			}
+		 			layer.closeAll();
+		 		});
+		 	}
+//根据头像报警状态判断执行弹出层
+function temFun1(e){
+	//var va = $(e).attr("data-value");
+	var va = $("#current_alter").attr("class");
+	if(va=="ico1"){
+		/*read();*/
+//		layer.open({
+//			closeBtn:1,
+//		    content:$("#outLayer1_al").html(),
+//		},1);
+		layer.open({
+			type: 2,
+			area: ['80%', '65%'],
+			closeBtn: 2,
+			title: false,
+			shadeClose: true,
+			content:'../tpls/warn.html' 
+		});
+	}else{
+		layer.open({
+			closeBtn:false,
+			title: false,
+			btn:false,
+			offset:'rb',
+			shadeClose: true,
+			area:['100%','70%'],
+		    content: $("#outLayer1").html(),
+		});
+	}
+}
+		 </script>
+		<style type="text/css">
+			/****警告****/
+			.alertBox{
+				width: 100%;
+				height: 100%;
+				z-index: 1000;
+				padding-top: 40px;
+				box-sizing: border-box;
+				overflow: hidden;
+			}
+			.alertBox .photo{
+				width: 100%;
+				height: 35%;
+				text-align: center;
+				display: none;
+			}
+			.alertBox .photo span{
+				margin-left: 15px;
+				letter-spacing: 2px;
+			}
+			.alertBox .photo div{
+				display: block;
+				width: 34%;
+				height: auto;
+				margin: 0 auto;
+				border: 3px solid #CCCCCC;
+				overflow: hidden;
+				border-radius: 50%;
+			}
+			.alertBox .photo div img{
+				width: 100%;
+				height: auto;
+			}
+			.alertBox .txt{
+				width: 100%;
+				max-height: 80%;
+				padding: 0px 30px;
+				box-sizing: border-box;
+				overflow: auto;
+			}
+			/*.alertBox .txt ul{
+				height: 8em;
+				overflow-y: auto;
+			}*/
+			.sex{
+				display: inline-block;
+			    height: 15px;
+			    width: 15px;
+			    margin-bottom: -2px;
+			   /*background-image: url(../images/arrow/woman.png);*/
+			    background-repeat: no-repeat;
+			    background-position: center center;
+			    background-size: 90% auto;
+			}
+			.alertBox .txt h2{
+			    padding: 5px 0 15px;
+			    font-size: 26px;
+			    text-align: center;
+			    font-weight: 500;
+			    margin: 0;
+			}
+			.alertBox .txt li{
+				width: 100%;
+				font-size: 14px;
+				height: auto;
+				color: #666;
+			}
+			.alertBox .txt li label{
+				display: inline-block;
+				width: 70px;
+				font-weight: normal;
+				float: left;
+			}
+			.alertBox .txt li span{
+				width: calc(100% - 75px);
+				display: inline-block;
+				text-align: justify;
+				
+			}
+			.red{
+				color: red;
+				font-size: 16px;
+				display: block;
+				margin: 0 auto;
+				text-align: center;
+				text-decoration: underline;
+				padding: 20px 0 10px 0 ;
+			}
+		</style>
+<div class="alertBox">
+
+ <div class="txt"> 
+		 <h2>报警提醒</h2> 
+		 <ul>
+		 <li> 
+		 <label>您的家人：</label><span id="userName">亲人&nbsp;发出警报，请尽快确认!确保<span id="relations">亲人</span>平安!</span>
+		 </li> 
+		 <li> 
+		 <label>报警设备：</label><span id="alter_code">100000000054</span>
+		 </li> 
+		 <li> 
+		 <label>报警时间：</label><span id="alter_day">2016年09月23日 14:25</span>
+		 </li>
+		 <li>
+		 <label>报警类型：</label><span id="alter_type">报警</span>
+		 </li>
+		 <li>
+		 <label>详细信息：</label><span id="alter_position">上海市长阳路45555号</span>
+		 </li> 
+		 <li>请您尽快与家人联系！</li> 
+		 </ul>
+	 </div> 
+	  <span class="red" onclick="goToTrackPosition()">详细地址</span>
+	  <input type="hidden" id="alter_id" value="">
+ </div>

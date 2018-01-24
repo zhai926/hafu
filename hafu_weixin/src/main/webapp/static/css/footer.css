@@ -1,0 +1,219 @@
+/*******左侧边栏的样式start*********/
+body{
+	overflow-x: hidden;
+	position: relative;
+}
+a:link{
+	text-decoration:none;
+}
+a:hover{
+	text-decoration:none;
+}
+a:visited{
+	text-decoration:none;
+}
+a:active{
+	text-decoration:none;
+}
+
+.opaity5{
+	opacity: 0.4;
+}
+.content{
+	position: absolute;
+	overflow-x: hidden;
+	left: 0;
+	top: 0;
+	width: 100%;
+	padding-bottom:50px;
+	
+}
+.left-nav{
+	width:40%;
+	height: 100%;
+	padding-bottom: 0.5rem;
+	box-sizing:border-box;
+	font-size: 50px;
+	position: fixed;
+	left: -200px;
+	top: 0;
+	z-index: 1001;
+
+}
+.left-nav ul{
+	width: 100%;
+	height: 100%;
+}
+.left-nav ul li{
+	width: 100%;
+	height: 14%;
+}
+.left-nav ul li a{
+	display: flex;
+	align-items:center;
+	width: 100%;
+	height: 100%;
+	text-align: center;	
+	font-size: 16px;
+	color:rgba(255,255,255,1);
+	
+}
+.left-nav ul li a span{
+	display: inline-block;
+	width: 30px;
+	height: 100%;
+	border: solid rgba(255,255,255,0.3);
+	border-width: 0px 0 1px 0;
+	float: left;
+	margin-left: 10px;
+	margin-right:10px;
+}
+.left-nav ul li a span.set{
+	background: url(../images/arrow/map.png) no-repeat center center;
+	background-size: 75% auto; 
+	opacity: 0.5;
+}
+.left-nav ul li a span.map{
+	background: url(../images/arrow/map.png) no-repeat center center;
+	background-size: 75% auto; 
+	opacity: 0.5;
+}
+.left-nav ul li a span.sport{
+	background: url(../images/arrow/data.png) no-repeat center center;
+	background-size: 75% auto; 
+	opacity: 0.5;
+}
+.left-nav ul li a span.active{
+	background: url(../images/arrow/avtive.png) no-repeat center center;
+	background-size: 75% auto; 
+}
+.left-nav ul li a span.scole{
+	background: url(../images/arrow/scole.png) no-repeat center center;
+	background-size: 75% auto; 
+}
+.left-nav ul li a span.song{
+	background: url(../images/arrow/song.png) no-repeat center center;
+	background-size: 75% auto; 
+}
+.left-nav ul li a span.joke{
+	background: url(../images/arrow/joke.png) no-repeat center center;
+	background-size: 75% auto; 
+}
+/*******左侧边栏的样式end*********/
+.footer{
+	width: 100%;
+	height: 50px;
+	color: white;
+	font-size: 16px;
+	zoom: 1;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	z-index: 1000;
+	
+}
+
+/**********底部*******/
+.footer>div{
+	float: left;
+}
+.footer .foot-left{
+	width: 23%;
+	text-align: center;
+	height: 100%;
+	user-select:none;
+	-webkit-user-select: none;
+	-webkit-touch-callout: none;
+}
+.footer .foot-left a{
+	display: inline-block;
+	line-height: 0px;
+	width: 100%;
+	height: 100%;
+	padding: 0px 35%;
+	height: 27px;
+	vertical-align: middle;
+	margin-top: 11px;
+}
+.footer .foot-left span{
+	content: '';
+	width: 100%;
+	height: 0;
+	border: 1px solid white;
+	display: inline-block;
+	margin-top: 6px;
+}
+
+.footer .foot-middle{
+	width: 54%;
+	height: 100%;
+	position: relative;
+	line-height: 50px;
+	text-align: center;
+	letter-spacing: 2px;
+}
+.footer .foot-middle a{
+	color:white;
+}
+.footer .foot-middle #btn{
+	content: '';
+	width: 0;
+	height: 0;
+	border: 12px solid #f0f0f0;
+	border-right-width: 0;
+	border-left-color: transparent;
+	border-top-color: transparent;
+	position: absolute;
+	bottom:5px;
+	right: 5px;
+	z-index: 999;
+}
+.footer .foot-home{
+	width: 23%;
+	height: 100%;
+	background:url(../images/arrow/home.png) no-repeat center center;
+	background-size: 30% auto;
+}
+.footer .foot-home a{
+	display:inline-block;
+	width:100%;
+	height:100%;
+}
+
+.footer .footer-list{
+	width: 100%;
+	padding-top:0.8em;
+	line-height: 3em;
+	position: absolute;
+	bottom:-14em;
+	left: 0;
+	z-index: -1;
+	
+	transition: all 0.5s;
+	
+}
+.footer .move-list{
+	bottom: 50px;
+	
+}
+
+.footer .footer-list ul{
+	width: 100%;
+}
+.footer .footer-list li{
+	width: 100%;
+	text-align: center;
+	
+}
+.footer .footer-list li a{
+	color: white;
+	font-size: 0.95em;
+	display: inline-block;
+	width: 100%;
+	height: 100%;
+}
+#yyICOPic{position: fixed; z-index: 9999; font-size: 14px; width: 120px; height: 120px; top:50%; left: 50%; margin-left: -60px; margin-top: -60px; background: rgba(0, 0, 0, 0.5); color: #FFF; text-align: center; border-radius: 10%; line-height: 24px;}
+#yyICOPic img{display: block; width: 60%; margin: auto; margin-top: 12%; margin-bottom: 5%;}
+.footer  #yyICOPic{position: absolute; z-index: 9999; font-size: 2em; width: 10em; height: 10em; top:50%; left: 50%; margin-left: -5em; margin-top: -10em; background: rgba(0, 0, 0, 0.5); color: #FFF; text-align: center; border-radius: 10%; line-height: 2em;}
+
+.footer #yyICOPic img{display: block; width: 60%; margin: auto; margin-top: 12%; margin-bottom: 5%;}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hafu.repository.mybatis.HfExaminationMybatisDao" >
+  <resultMap id="BaseResultMap" type="com.hafu.entity.HfExamination" >
+    <id column="id" property="id" jdbcType="DECIMAL" />
+    <result column="start_date" property="startDate" jdbcType="TIMESTAMP" />
+    <result column="end_date" property="endDate" jdbcType="TIMESTAMP" />
+    <result column="page_no" property="pageNo" jdbcType="INTEGER" />
+    <result column="page_size" property="pageSize" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <sql id="Base_Column_List" >
+    id, start_date, end_date, page_no, page_size, create_time,status
+  </sql>
+  
+  <select id="selectByLastTime" resultMap="BaseResultMap" >
+    select
+    <include refid="Base_Column_List" />
+    from hf_examination order by create_time desc LIMIT 1;
+  </select>
+  
+  <insert id="insert" parameterType="com.hafu.entity.HfExamination" >
+    insert into hf_examination (start_date, end_date, 
+      page_no, page_size, create_time,status
+      )
+    values (#{startDate,jdbcType=TIMESTAMP}, #{endDate,jdbcType=TIMESTAMP}, 
+      #{pageNo,jdbcType=INTEGER}, #{pageSize,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER}
+      )
+      <selectKey keyProperty="id" resultType="java.lang.Long" order="AFTER">
+          select LAST_INSERT_ID()
+     </selectKey>
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.hafu.entity.HfExamination" >
+    update hf_examination
+    <set >
+      <if test="startDate != null" >
+        start_date = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null" >
+        end_date = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pageNo != null" >
+        page_no = #{pageNo,jdbcType=INTEGER},
+      </if>
+      <if test="pageSize != null" >
+        page_size = #{pageSize,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id}
+  </update>
+</mapper>

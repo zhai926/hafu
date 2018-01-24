@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hafu.repository.mybatis.UserMybatisDao">
+	<resultMap type="com.hafu.dto.UserDto" id="userMap">
+		<id column="id" property="id" jdbcType="DECIMAL"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="real_name" property="realName" jdbcType="VARCHAR"/>
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+		<result column="avater" property="avater" jdbcType="VARCHAR"/>
+		<result column="gender" property="gender" jdbcType="VARCHAR"/>
+		<result column="birthday" property="birthday" jdbcType="VARCHAR"/>
+		<result column="height" property="height" jdbcType="DECIMAL"/>
+		<result column="weight" property="weight" jdbcType="DECIMAL"/>
+		<result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+		<result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+		<result column="email" property="email" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="country" property="country" jdbcType="VARCHAR"/>
+		<result column="city" property="city" jdbcType="VARCHAR"/>
+		<result column="area" property="area" jdbcType="VARCHAR"/>
+		<result column="age" property="age" jdbcType="DECIMAL"/>
+		<result column="card" property="card" jdbcType="VARCHAR"/>
+		<result column="specialty" property="specialty" jdbcType="VARCHAR"/>
+		<result column="casehistory" property="casehistory" jdbcType="VARCHAR"/>
+		<result column="open_id" property="openId" jdbcType="VARCHAR"/>
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+		<result column="delete_flag" property="deleteFlag" jdbcType="DECIMAL"/>
+		<result column="code" property="code" jdbcType="VARCHAR"/>
+		<result column="contact_person" property="contactPerson" jdbcType="VARCHAR"/>
+	</resultMap>
+	
+	
+	<select id="listAll" resultType="HfUser" parameterType="java.util.Map">
+		select * from hf_user;
+	</select>
+	<!-- 我绑定的人（不包含设备） -->
+	<select id="mybangHolder" resultMap="userMap" parameterType="java.util.Map">
+		select u.* ,ud.nick_name as nickName
+		from hf_concern_user ud 
+		LEFT JOIN hf_user u on ud.user_id = u.id 
+		 where ud.concern_user_id = #{userId} 
+		order by ud.create_date desc 
+	</select>
+	<!-- 我绑定的人(必须包含设备) -->
+	<select id="mybangUser" resultMap="userMap" parameterType="java.util.Map">
+		select * from (
+			select u.*,d.code as code ,ud.nick_name as nickName
+			from hf_concern_user ud 
+			LEFT JOIN hf_user u on ud.user_id = u.id 
+			LEFT JOIN hf_device d on u.id = d.user_id  where ud.concern_user_id = #{userId} and  d.delete_flag=0 
+			order by d.create_date desc ) t GROUP BY t.id
+	</select>
+	<!-- 包含设备列表的用户信息 -->
+	<resultMap type="com.hafu.dto.UserContainDeviceDto" id="userContainDeviceMap">
+		<id column="id" property="id" jdbcType="DECIMAL"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="real_name" property="realName" jdbcType="VARCHAR"/>
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+		<result column="avater" property="avater" jdbcType="VARCHAR"/>
+		<result column="gender" property="gender" jdbcType="VARCHAR"/>
+		<result column="birthday" property="birthday" jdbcType="VARCHAR"/>
+		<result column="height" property="height" jdbcType="DECIMAL"/>
+		<result column="weight" property="weight" jdbcType="DECIMAL"/>
+		<result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+		<result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+		<result column="email" property="email" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="country" property="country" jdbcType="VARCHAR"/>
+		<result column="city" property="city" jdbcType="VARCHAR"/>
+		<result column="area" property="area" jdbcType="VARCHAR"/>
+		<result column="age" property="age" jdbcType="DECIMAL"/>
+		<result column="card" property="card" jdbcType="VARCHAR"/>
+		<result column="specialty" property="specialty" jdbcType="VARCHAR"/>
+		<result column="casehistory" property="casehistory" jdbcType="VARCHAR"/>
+		<result column="open_id" property="openId" jdbcType="VARCHAR"/>
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+		<result column="delete_flag" property="deleteFlag" jdbcType="DECIMAL"/>
+		<result column="contact_person" property="contactPerson" jdbcType="VARCHAR"/>
+		<collection property="deviceList" column="{id=id,concernUserId=concernUserId}" select="com.hafu.repository.mybatis.HfDeviceMybatisDao.myDeviceListConcern"></collection>
+	</resultMap>
+	<!-- 使用人列表 -->
+	<select id="deviceUserList" resultMap="userContainDeviceMap" parameterType="java.util.Map">
+			select u.*,ud.concern_user_id as concernUserId,ud.nick_name as nickName
+			from hf_concern_user ud 
+			LEFT JOIN hf_user u on ud.user_id = u.id 
+			<where>
+				ud.concern_user_id = #{userId} and  u.delete_flag=0 
+			</where> 
+			order by ud.create_date desc 
+	</select>	
+	<!-- 用户信息（含设备） -->
+	<select id="getUserInfoById" resultMap="userContainDeviceMap" parameterType="java.util.Map">
+			select u.*,ud.concern_user_id as concernUserId ,ud.nick_name as nickName
+			from hf_concern_user ud 
+			LEFT JOIN hf_user u on ud.user_id = u.id 
+			<where>
+				ud.concern_user_id = #{concernUserId} and ud.user_id=#{userId} and  u.delete_flag=0
+			</where> 
+			limit 1;
+	</select>
+	<!-- 获取身份证不为空的用户 -->
+	<select id="getCardId" resultMap="userMap">
+		select * from hf_user where card !='' and card is not null
+	</select>
+	<select id="getWeixinUserConcernUser" resultMap="userMap">
+		select u.* from hf_concern_device ud LEFT JOIN hf_user u 
+		on ud.concern_user_id = u.id 
+		where ud.code = #{code} and u.delete_flag=0 
+	</select>
+	<!-- 查找所有关注我的人  -->
+	<select id="getMyConcernUser" resultMap="userMap">
+		select u.*,ud.nick_name as nickName
+		from (select concern_user_id,nick_name 
+				from hf_concern_user where user_id=#{userId} ) as ud 
+		LEFT JOIN hf_user u on ud.concern_user_id = u.id 
+		<where>
+			u.delete_flag=0 
+		</where>
+	</select>
+	
+</mapper>

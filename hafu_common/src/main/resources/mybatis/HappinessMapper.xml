@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hafu.repository.mybatis.HfHappinessMybatisDao">
+	<resultMap type="com.hafu.entity.HfHappiness" id="HfHappinessMap">
+		<id column="id" property="id" jdbcType="DECIMAL"/>
+		<result column="user_id" property="userId" jdbcType="DECIMAL"/>
+		<result column="code" property="code" jdbcType="VARCHAR"/>
+		<result column="creat_date" property="createDate" jdbcType="TIMESTAMP"/>
+		<result column="end_date" property="endDate" jdbcType="TIMESTAMP"/>
+		<result column="happiness" property="happiness" jdbcType="DECIMAL"/>
+		<result column="create_day" property="createDay" jdbcType="VARCHAR"/>
+	</resultMap>
+	   
+	    <!-- 保存到数据库 -->
+	    <insert id="insertHappiness" parameterType="com.hafu.entity.HfHappiness">
+	        INSERT into hf_happiness (user_id,code,creat_date,end_date,happiness,create_day) VALUES(#{userId},#{code},#{createDate},#{endDate},#{happiness},#{createDay})
+	    </insert>   
+	    
+	     <!-- 查询快乐指数信息 --> 
+	    <select id="findHappiness" resultMap="HfHappinessMap" parameterType="java.util.Map">
+	         SELECT * from  hf_happiness WHERE 1 = 1
+	         <if test="userId !=null and userId !=''">
+	               AND  user_id=#{userId}
+	         </if>
+	         <if test="code !=null and code !=''">
+	               AND  code=#{code}
+	         </if>
+	         
+	         <if test="createDate!=null and createDate !=''">
+				  AND  creat_date = #{createDate}
+			</if>
+			<if test="endDate!=null and endDate!=''">
+				  AND  end_date = #{endDate}
+			</if>
+			<if test="happiness!=null and happiness!=''">
+				 AND happiness=#{happiness}
+			</if>
+			<if test="createDay!=null and happiness!=''">
+				 AND create_day=#{createDay}
+			</if>
+	    </select>   
+	  
+	    <!-- 修改快乐指数 -->  
+	    <update id="updateHappiness" parameterType="com.hafu.entity.HfHappiness">
+	       UPDATE hf_happiness
+	        <set>
+			<if test="endDate != null ">
+				   end_date=#{endDate},
+			</if>
+				<if test="happiness != null">
+				  happiness=#{happiness}
+				</if>  
+	        </set>
+	        WHERE  1 = 1
+	        <if test="userId !=null and userId !=''">
+	               AND  id = #{id}
+	         </if>
+	        
+	    </update>
+
+</mapper>

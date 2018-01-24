@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hafu.repository.mybatis.HfDeviceMybatisDao">
+	<!-- 设备map -->
+	<resultMap type="com.hafu.entity.HfDevice" id="DeviceMap">
+		<id column="id" property="id" jdbcType="DECIMAL"/>
+		<result column="user_id" property="userId" jdbcType="DECIMAL"/>
+		<result column="code" property="code" jdbcType="VARCHAR"/>
+		<result column="create_date" property="createDate" jdbcType="DECIMAL"/>
+		<result column="delete_flag" property="deleteFlag" jdbcType="DECIMAL"/>
+	</resultMap>
+	<resultMap type="com.hafu.dto.UserDto" id="userMap">
+		<id column="id" property="id" jdbcType="DECIMAL"/>
+		<result column="name" property="name" jdbcType="VARCHAR"/>
+		<result column="real_name" property="realName" jdbcType="VARCHAR"/>
+		<result column="nickName" property="nickName" jdbcType="VARCHAR"/>
+		<result column="avater" property="avater" jdbcType="VARCHAR"/>
+		<result column="gender" property="gender" jdbcType="VARCHAR"/>
+		<result column="birthday" property="birthday" jdbcType="VARCHAR"/>
+		<result column="height" property="height" jdbcType="DECIMAL"/>
+		<result column="weight" property="weight" jdbcType="DECIMAL"/>
+		<result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+		<result column="telephone" property="telephone" jdbcType="VARCHAR"/>
+		<result column="email" property="email" jdbcType="VARCHAR"/>
+		<result column="address" property="address" jdbcType="VARCHAR"/>
+		<result column="country" property="country" jdbcType="VARCHAR"/>
+		<result column="city" property="city" jdbcType="VARCHAR"/>
+		<result column="area" property="area" jdbcType="VARCHAR"/>
+		<result column="age" property="age" jdbcType="DECIMAL"/>
+		<result column="card" property="card" jdbcType="VARCHAR"/>
+		<result column="specialty" property="specialty" jdbcType="VARCHAR"/>
+		<result column="casehistory" property="casehistory" jdbcType="VARCHAR"/>
+		<result column="open_id" property="openId" jdbcType="VARCHAR"/>
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+		<result column="delete_flag" property="deleteFlag" jdbcType="DECIMAL"/>
+		<result column="code" property="code" jdbcType="VARCHAR"/>
+		<result column="deviceId" property="deviceId" jdbcType="DECIMAL"/>
+	</resultMap>
+	
+	<!-- 我关注的 设备列表(包含持有人信息)  -->
+	<select id="myAttentitonDeviceList" resultMap="userMap" parameterType="java.util.Map">
+		select * from (
+			select d.id as deviceId,d.code as code,u.* ,null as nickName 
+			from hf_concern_device ud  
+			LEFT JOIN hf_device d on ud.code = d.code
+			LEFT JOIN hf_user u on d.user_id = u.id 
+			<where>
+				ud.concern_user_id = #{userId} and d.code is not null and  d.delete_flag=0 
+			</where> 
+			order by ud.create_date desc ) t 
+	</select>
+	
+	<!-- 我的设备列表 -->
+	<select id="myDeviceList" resultMap="DeviceMap" parameterType="java.lang.Long">
+		select d.* from hf_device d 
+		<where>d.user_id = #{id} and d.delete_flag=0</where> order by d.create_date desc
+	</select>
+	<!-- 我的设备列表（且与关注人相关的） -->
+	<select id="myDeviceListConcern" resultMap="DeviceMap" parameterType="java.util.Map">
+		select d.* from hf_concern_device cd left join hf_device d on cd.code=d.code 
+		<where>d.user_id = #{id} and cd.concern_user_id = #{concernUserId} and d.delete_flag=0</where> order by cd.create_date desc
+	</select>
+	<!--查询该设备是否属于该人关注的人的设备  -->
+	<select id="findBydeviceIdAndAttenUser" resultMap="DeviceMap" parameterType="int">
+		select d.* from hf_device d left join hf_concern_user h on d.user_id = h.user_id 
+		<where>
+			d.id = #{deviceId} and d.delete_flag=0 and h.concern_user_id = #{userId}
+		</where>
+		limit 1;
+	</select>
+	<!-- 我的信息和最新设备  -->
+	<select id="userAndIsLastDevice" resultMap="userMap" parameterType="java.util.Map">
+			select d.id as deviceId,d.code as code,u.* ,
+			(select ud.nick_name from hf_concern_user ud where ud.concern_user_id=#{concernUserId} and ud.user_id = #{userId}) as nickName   
+			from hf_user u
+			LEFT JOIN hf_device d on u.id = d.user_id  
+			<where>
+				u.id = #{userId} and  u.delete_flag=0 
+			</where> 
+			order by d.create_date desc limit 1;
+	</select>
+	<!-- 根据code获得设备和持有人 -->
+	<select id="getDeviceAndUserByCode" resultMap="userMap" parameterType="java.lang.String">
+			select d.id as deviceId,d.code as code,u.* ,ud.nick_name as nickName   
+			from hf_device d
+			LEFT JOIN hf_user u on u.id = d.user_id  
+			<where>
+				d.code = #{code} and  d.delete_flag=0 
+			</where> 
+			 limit 1;
+	</select>
+	<!-- 根据关注人id  和  持有人id  查询 关注人和设备关系  -->
+	<select id="getConcernDeviceFromUserDevice" resultType="HfConcernDevice" parameterType="java.util.Map">
+		select cd.id,cd.concern_user_id as concernUserId,cd.code,cd.create_date as createDate 
+		from hf_concern_device cd where cd.concern_user_id=#{concernUserId} and cd.code in 
+			(select d.code from 
+			hf_device d left join hf_concern_user cu on d.user_id=cu.user_id 
+			where cu.user_id = #{userId} and cu.concern_user_id=#{concernUserId})
+	</select>
+	<select id="findAllDevice" resultMap="DeviceMap">
+		select * from hf_device where delete_flag = 0;
+	</select>
+</mapper>

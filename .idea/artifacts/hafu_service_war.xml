@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="hafu_service:war">
+    <output-path>$PROJECT_DIR$/hafu_service/target</output-path>
+    <root id="archive" name="hafu_service-1.0.war">
+      <element id="artifact" artifact-name="hafu_service:war exploded" />
+    </root>
+  </artifact>
+</component>

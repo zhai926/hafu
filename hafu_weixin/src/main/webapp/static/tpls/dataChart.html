@@ -1,0 +1,593 @@
+		<html>
+		<head>
+		<link rel="stylesheet" type="text/css" href="../css/normalize.css"/>
+		<link rel="stylesheet" type="text/css" href="../css/jquery.hiSlider.min.css"/> 
+		<link rel="stylesheet" type="text/css" href="../css/alert.css"/> 
+		<script src="../js/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/jquery.hiSlider.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../js/echarts.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			.hiSlider-pages a:nth-child(2){
+				background-color: #FAD3D4;
+			}	
+				.sex{
+				display: inline-block;
+			    height: 15px;
+			    width: 15px;
+			    margin-bottom: -2px;
+			    background: url(../images/arrow/woman.png) no-repeat center center;
+			     background-size: 90% auto;
+			}
+		</style>
+		</head>
+		<body>
+		<div class="warp">
+		<div class="layer-box">
+			 <ul class="hiSlider hiSlider3" >
+			 	<li class="hiSlider-item" >
+		        	<h3>快乐指数：</h3>
+		        	<div class="top " style="padding-top:10px">
+		        		<div class="photo happy-arrow">
+		        			<img src="../images/arrow/happy.png" />
+		        		</div>
+		        		<span class="scole colorT" id="happy" style="margin-left:6px;">60分</span>
+		        	</div>
+		        	<div class="txt" style="margin-top:10px">
+		        		<p>
+		        		<span id="relations">妈妈</span>今天运动很少，不是很开心***********
+		        		</p>
+		        	</div>
+		        </li>
+		        <li class="hiSlider-item">
+			       	<h3>运动步数：</h3>
+		        	<div class="top">
+		        		<div class="photo">
+		        			<img class="myphoto" src="../images/man.png"/>
+		        		</div>
+		        		<span id="relations" class="sexbox">妈妈<i class="sex"></i></span>
+		        	</div>
+		        	<div class="chart" id="main2"></div>
+		        	<span class="allStep colorT" id="step_today">3298步</span>
+		        	<h1><a href="/health/sportData" target="_parent" style="border-bottom:1px solid #ccc">超过全国<span class="colorT" id="step_score">33%</span>的爸妈</a></h1>
+		       </li>
+		        <li class="hiSlider-item" >
+		        	<h3>快乐指数：</h3>
+		        	<div class="top">
+		        		<div class="photo">
+		        			<img class="myphoto" src="../images/man.png"/>
+		        		</div>
+		        		<span id="relations" class="sexbox">妈妈<i class="sex"></i></span>
+		        	</div>
+		        	<div class="chart" id="main"></div>
+		        	<h1>超过全国<span class="colorT" id ="happy_score">60%</span>的爸妈</h1>
+		        </li>
+		        <li class="hiSlider-item">
+		        	<h3>行为识别：</h3>
+		        	<div class="chartY" id="main3"></div>
+		        	<div class="txt" style="margin-top:20px;"><a href="/index/behavior_list" target="_parent" style="border-bottom:1px solid #ccc;color:#888">当前状态<span>&nbsp;无记录</span></a></div>
+		        </li>
+		        <li class="hiSlider-item" >
+		        	<h3>行为识别：<hr color="#F0F0F0" style="font-weight: normal;"></h3>
+		        	<div class="behaveBox">
+		        		<ul>
+		        			<!-- <li><em>●</em> 未佩戴<span class="fr">16:24</span></li>
+		        			<li><em>●</em> 在家，坐着<span class="fr">10:24</span></li>
+		        			<li><em>●</em> 在家附近，走路<span class="fr">8:24</span></li>
+		        			<li><em>●</em> 未佩戴<span class="fr">16:24</span></li>
+		        			<li><em>●</em> 在家，坐着<span class="fr">10:24</span></li>
+		        			<li><em>●</em> 在家附近，走路<span class="fr">8:24</span></li> -->
+		        		</ul>
+		        	</div>
+		        	<div class="img"></div>
+		        </li>
+		   </ul>
+		   <div class="hiSlider-pages">
+			   <a href="javascript:;" class="">1</a>
+			   <a href="javascript:;" class="active">2</a>
+			   <a href="javascript:;">3</a>
+		   </div>
+		</div>
+		</div>	
+	<script type="text/javascript">
+       //异步获取行为数据
+ function behaviorList(){
+		    $.ajax({
+		       url:"/index/behaviorList",
+		       type:"post",
+		       dataType:"json",
+		       async:false,
+		       success:function(data){
+		    	   var behaviorList= data.ob
+		           if(data.status=='success' && behaviorList != null && behaviorList.length != 0){
+		        	   var lis='';
+		        	   var behavior='';
+		        	   var behaviorType='';
+		        	    for(var i = 0; i < data.ob.length; i++) {
+		        	    	behaviorType = behaviorList[i].behaviorType;
+		        	    	if(behaviorType.indexOf(",")>0){
+		        	    		
+		        	    		if(behaviorType.indexOf("走")>0){
+		        	    			
+			        	    		behavior = '走路';
+			        	    	}else if(behaviorType.indexOf("步行")>0){
+			        	    		behavior = '步行';
+			        	    	}else{
+			        	    		behavior = behaviorType.substring(behaviorType.indexOf(",")+1);
+
+			        	    		//alert("行为"+behavior);
+
+			        	    	}
+		        	    	}else{
+		        	    		if(behaviorType.indexOf("走")>0){
+			        	    		behavior = '走路';
+			        	    	}else if(behaviorType.indexOf("步行")>0){
+			        	    		behavior = '步行';
+			        	    	}else{
+			        	    		behavior = behaviorType;
+			        	    	}
+		        	    	}
+		        	    	
+							lis += '<li><em>●</em>'+behavior+'<span class="fr">'+ Date2Format(data.ob[i].startTime.time)+'</span></li>';
+						}
+		        	    $('.behaveBox').find('ul').append(lis); 
+		           }else{
+		        	   var box = $('<div style="width:100%;height:100%;justify-content:center;display:flex;align-items:center">'+data.msg+'</div>');
+		        	    $('.behaveBox').append(box);  
+		           }    
+		       }
+		    });
+}
+//时间的转换
+function Date2Format(date){
+				var tempDate = new Date(date);
+			  /*   Y = tempDate.getFullYear() + '-';
+				M = (tempDate.getMonth()+1 < 10 ? '0'+(tempDate.getMonth()+1) : tempDate.getMonth()+1) + '-';
+				D = tempDate.getDate() + ' ';  */
+				h = tempDate.getHours() ;
+				if(h<10){
+		            	h="0"+h+':';
+		            }else{
+		            	h=h+':';
+		        }
+				m = tempDate.getMinutes();
+				if(m<10){
+	            	m='0'+m;
+	            }else{
+	            	m=m;
+	            }
+				/* s = tempDate.getSeconds();  */
+				var str = h+m
+				return str ;
+			} 
+	</script>
+	<script type="text/javascript">
+	//这里是根据页面传值判断性别和首个页面
+		var r=  window.location.search;
+		var data = r.split('?');
+		var sex = data[1].split('&')[0];
+		var num = data[1].split('&')[1];
+		var arr1 = sex.split('=');
+		var arr2 = num.split('=');
+		//一周步数
+		var step_arr = new Array();
+	    var date_arr = new Array();
+	    //昨日行为类型及时间数组
+	    var yesterday_behav_arr = new Array();
+	    var yesterday_time = new Array();
+	    //今日行为列表及开始时间数组
+			   var week_happy_arr = new Array();
+			   var date_happy_arr = new Array();
+	    
+		//折线图的颜色colorT
+		var colorT = [],
+	     colorOne = ['#9ED7EA','#9ED7EA'],
+		 colorTwo = ['#F2A09D','#F2A09D'];
+	    //饼状图的颜色colorArr
+	    var colorArr = [],
+	   		 colorArr1 = ['#DEEDF2','#9ED7EA','#5eb8f0','#3F86C4'],
+        	colorArr2 = ['#FCE9EB','#FAD7DE','#F08889','#E25563'];
+		//这里判断是性别，为男性（arr[1]==1）才加载一下代码；
+		if(arr1[1] == 1){
+	    	$('.colorT').css({'color':'#9ED7EA'});
+	    	$('.hiSlider-pages').find('a').eq(1).css('background-color','#DEEDF2');
+	    	$('.hiSlider-item .img').css({'background':'url(../images/arrow/adr2.png) no-repeat center center','background-size':'70% auto'});
+	    	$('.hiSlider-item .happy-arrow img').attr('src','../images/arrow/happy2.png');
+	    	$('.hiSlider-item').find('.sex').css({'background':'url(../images/arrow/man.png) no-repeat center center !important', 'background-size': '90% auto'})
+	    	
+	    	colorT = colorOne;
+	    	colorArr = colorArr1;
+		}else{
+			colorT = colorTwo;
+	    	colorArr = colorArr2;
+		};
+		
+	    $(function(){
+	    	//弹出框的轮播
+			$('.hiSlider3').hiSlider({
+				//起始页面arr2[1]
+		        startSlide:arr2[1],
+		        isFlexible: true,
+		        isSupportTouch: true,
+		        isShowTitle: false,
+		        titleAttr: function(curIdx){
+		        }
+		    });
+	    	if(arr1[1] == 1){
+	    		//alert("获取到性别"+arr1[1]);
+		    	//这里判断是否为男性，为男性才加载一下代码；
+		    	$('.colorT').css({'color':'#9ED7EA'});
+		    	$('.hiSlider-pages').find('a').eq(1).css('background-color','#DEEDF2');
+		    	$('.hiSlider-pages').find('a').eq(1).css('background-color','#DEEDF2');
+		    	$('.hiSlider-item .img').css({'background':'url(../images/arrow/adr2.png) no-repeat center center','background-size':'70% auto'});
+		    	$('.hiSlider-item .happy-arrow img').attr('src','../images/arrow/happy2.png');
+		    	$('.hiSlider-item').find('.sex').eq(0).css({'background':'url(../images/arrow/man.png) no-repeat center center', 'background-size': '90% auto'});
+		    	$('.hiSlider-item').find('.sex').eq(1).css({'background':'url(../images/arrow/man.png) no-repeat center center', 'background-size': '90% auto'})
+		    	$('.hiSlider-item').find('.sex').eq(2).css({'background':'url(../images/arrow/man.png) no-repeat center center', 'background-size': '90% auto'})
+		    
+	    	}
+	    var charts = $('.item-clone').find('#main');
+			    weekStep();
+			    stepPageData();
+			    yesterdayBehavior();
+			    wearStatus();
+		        happyScore();
+			    happyPageData();
+			    behaviorList();
+		 });
+  //异步获取快乐指数页面数据（笑脸弹框页面）
+	    function happyPageData(){
+	    	$.getJSON("/index/happyPageData",function(data){
+	    		var nickName = data.ob.nickName;
+	    		$('.txt #relations').html(nickName);
+	    		var today_happy_score = data.ob.today_happy_score;
+	    		$('.top #happy').html(today_happy_score + "分");
+	    		var msg = data.msg;
+	    	    $('.txt p').html(nickName + msg);
+	    	});
+	    }
+ //异步获取一周快乐指数
+	    function happyScore(){
+	    	$.getJSON("/index/happyScore",function(data){
+	    		week_happy_arr = data.ob.week_happy;
+	    		date_happy_arr = data.ob.date_happy;
+	    		var today_score = data.msg;
+	    		$('#happy_score').html(today_score);
+	    		happyCharts();
+	    	});
+	    }
+	    //异步获取当前行为
+	    function wearStatus(){
+	    	$.getJSON("/index/indexAdorn",function(data){
+	    		if(data.msg == "暂无记录"){
+					//alert(data.msg);
+					/* alert(data.msg); */
+				}else{
+					$(".txt span").html("&nbsp;"+data.msg);
+				}
+	    	});
+	    }
+	    //异步获取昨日行为比例
+	    function yesterdayBehavior(){
+	    	$.getJSON("/index/getYesterdayBehavior",function(data){
+	    		yesterday_behav_arr = data.list;
+	    		yesterday_time = data.ob;
+	    		yesterdayBehavCharts();
+	    		console.log(yesterday_behav_arr)
+	    	});
+	    }
+	    function yesterdayBehavCharts(){
+	    	 var myChart3 = echarts.init(document.getElementById("main3"));
+	    	    
+	    	    option = {
+//	    		    	visualMap: {
+//	    				        show: false,
+//	    				        min: 80,
+//	    				        max: 600,
+//	    				        inRange: {
+//	    				            colorLightness: [0, 0.8]
+//	    				        }
+//	    				    },
+	    				color:colorArr,
+	    			    series: [
+	    				       {
+	    			            name:'运动分数',
+	    			            type:'pie',
+	    			            selectedMode: 'single',
+	    			            clickwise:false,
+	    			            radius: '5%',
+	    			            center:['50%','40%'],
+	    			            label: {
+	    			                normal: {
+	    			                    position: 'inner',
+	    				                textStyle:{
+	    				                    fontSize:18,
+	    				                	color:'#999',
+	    				                },
+	    				                
+	    			                },
+	    			                 
+	    			            },
+	    			            itemStyle:{
+	    			            	normal:{
+	    			            		color:'white',
+	    			            		opacity:0.0
+	    			            	},
+	    			            },
+	    			            labelLine: {
+	    			                normal: {
+	    			                    show: false
+	    			                }
+	    			            },
+	    			            data:new Array(yesterday_time[0])
+	    			        },
+	    			        {
+	    			            name:'运动分数',
+	    			            type:'pie',
+	    			            selectedMode: 'single',
+	    			            clickwise:false,
+	    			            radius: '5%',
+	    			            center:['50%','50%'],
+	    			            label: {
+	    			                normal: {
+	    			                    position: 'inner',
+	    				                textStyle:{
+	    				                    fontSize:12,
+	    				                	color:'#ccc',
+	    				                },
+	    				                
+	    			                },
+	    			                 
+	    			            },
+	    			            itemStyle:{
+	    			            	normal:{
+	    			            		color:'white',
+	    			            		opacity:0.0
+	    			            	},
+	    			            },
+	    			            labelLine: {
+	    			                normal: {
+	    			                    show: false
+	    			                }
+	    			            },
+	    			            data:new Array(yesterday_time[1])
+	    			            
+	    			        },
+	    			        {
+	    			            name:'行为比例',
+	    			            type:'pie',
+	    			            radius: ['55%', '85%'],
+	    			            hoverAnimation: false,
+	    			            data:yesterday_behav_arr,
+	    			             labelLine: {
+	    			                normal: {
+	    			                    lineStyle: {
+	    			                        color: 'rgba(0, 0, 0, 0.3)'
+	    			                    },
+	    			                    smooth: 0.2,
+	    			                    length: 5,
+	    			                    length2: 10
+	    			                }
+	    			            },
+	    			            labelText:{
+	    			            	normal:{
+	    			            		textStyle:{
+	    			            			color:'red'
+	    			            		},
+	    			            	}
+	    			            	
+	    			            }
+	    			           
+	    			        }
+	    			    ]
+	    			};
+	    	    // 为echarts对象加载数据
+	    	    myChart3.setOption(option);
+	    }
+	    //异步获取运动弹框页面显示数据
+	     function stepPageData(){
+	    	$.getJSON("/index/getStepPageData",function(data){
+	    		var ob = data.ob;
+	    		var sex = ob.sex;
+	    		var nickName = ob.nickName;
+	    		$('.top #relations').html(nickName);
+	    		var sexTmp = '';
+	    		if(sex == '男'){
+	    			var sexTmp = '<i class="sex" style="background:url(../images/arrow/man.png) no-repeat center center;background-size:90% auto;"></i>';
+	    		}else{
+	    			var sexTmp ='<i class="sex"></i>';
+	    		}
+	    		$('.top #relations').append(sexTmp);
+	    		
+	    		var score = ob.score;
+	    		$('#step_score').html(score);
+	    		var avater = ob.avater;
+	    		if(avater != null){
+	    			$(".photo .myphoto").attr("src", avater);
+	    		}
+	    		var todayStepNum = ob.todayStep;
+	    		$("#step_today").html(todayStepNum+"步");
+	    	});
+	    } 
+	    //异步获取一周步数及图表
+	    function weekStep() {
+   			 $.getJSON("/index/weekStep", function(data) {
+        	 	$.each(data.ob, function(i, item) {
+        			step_arr.push(item.stepData);
+        			date_arr.push(item.stepDate);
+        		});
+        	 	//alert(step_arr);
+        	 	stepCharts();
+       		 });
+		}
+	    function stepCharts(){
+	    	var myChart2 = echarts.init(document.getElementById("main2"));
+	    	
+	    	 var option = {
+//	    		      calculable : true,
+						tooltip: {
+					    		trigger: 'item',
+					    		textStyle:{
+					    			fontSize:'12px'
+					    		}
+							},
+	    		         grid: {
+	    			        left: '-8%',
+	    			        right: '18%',
+	    			        top:'5%',
+	    			        bottom:'5%',
+	    			        containLabel: true
+	    			    },
+	    		        xAxis : [
+	    		            {
+	    		                type : 'category',
+	    		                boundaryGap : false,
+	    		                axisLabel:{
+	    		                	show:false,
+	    		                	textStyle:{
+	    		                		color:'#fff'
+	    		                	}
+	    		                },
+	    		                axisLine:{show:false},
+	    		                splitLine:{show:false},
+	    		                axisTick:{show:false},
+	    		                data : date_arr
+	    		            }
+	    		        ],
+	    		        yAxis : [
+	    		            {
+	    		                type : 'value',
+	    		                 axisLabel:{
+	    		                	show:false,
+	    		                	formatter: '{value}步 ',
+	    		                	textStyle:{
+	    		                		color:'#fff'
+	    		                	},
+	    		                	
+	    		                },
+	    		                axisLine:{show:false},
+	    		                splitLine:{show:false},
+	    		                axisTick:{show:false},
+	    		                
+	    		            }
+	    		        ],
+	    		        series : [
+	    		            {
+	    		                name:'运动步数',
+	    		                type:'line',
+	    		                label:{
+	    		                	normal:{
+	    		                		show:true,
+	    		                		position:'bottom',
+	    		                		textStyle:{
+	    		                			fontSize:'12',
+	    		                			color:'#999'
+	    		                		}
+	    		                	}
+	    		                },
+	    		                symbolSize :6,
+	    		                itemStyle : {  
+	    		                        normal : {  
+	    		                        	color:colorT[0],
+	    		                            lineStyle:{  
+	    		                                color:colorT[1]  
+	    		                            } 
+	    		                            
+	    		                        }  
+	    		                    },  
+	    		                data:step_arr
+//	    		             
+	    		            }
+	    		        ]
+	    		      };
+    	    myChart2.setOption(option);
+	    }
+function happyCharts(){
+	    //这是快乐指数的数据
+		var cb = {
+		            categories: ["1","2","3","4","5","6"],
+		            data: week_happy_arr
+		        };
+
+	var myChart = echarts.init(document.getElementById("main"));
+	 var option = {
+			 tooltip: {
+		    		trigger: 'item',
+		    		textStyle:{
+		    			fontSize:'12px'
+		    		}
+				},
+		        grid: {
+			        left: '3%',
+			        right: '3%',
+			        top:'5%',
+			        bottom:'5%',
+			        containLabel: false
+			    },
+		        xAxis : [
+		            {
+		                type : 'category',
+		                boundaryGap : false,
+		                axisLabel:{
+		                	show:false,
+		                	textStyle:{
+		                		color:'#fff'
+		                	}
+		                },
+		                axisLine:{show:false},
+		                splitLine:{show:false},
+		                axisTick:{show:false},
+		                data : date_happy_arr
+		            }
+		        ],
+		        yAxis : [
+		            {
+		                type : 'value',
+		                 axisLabel:{
+		                	show:false,
+		                	formatter: '{value}步 '
+		                },
+		                axisLine:{show:false},
+		                splitLine:{show:false},
+		                axisTick:{show:false},
+		                
+		            }
+		        ],
+		        series : [
+			         
+		            {
+		                name:'快乐指数',
+		                type:'line',
+		                label:{
+		                	normal:{
+		                		show:true,
+		                		position:'bottom',
+		                		textStyle:{
+		                			fontSize:'12',
+		                			color:'#999'
+		                		}
+		                	}
+		                },
+		                symbolSize :5,
+		                itemStyle : {  
+		                        normal : {  
+		                        	color:colorT[0],
+		                            lineStyle:{  
+		                                color:colorT[1]  
+		                            } 
+		                            
+		                        }  
+		                    },  
+		                data:cb.data
+		            }
+		        ]
+		    };
+    // 为echarts对象加载数据
+    myChart.setOption(option);
+   
+  
+}
+    
+   
+    
+	</script>
+	</body></html>

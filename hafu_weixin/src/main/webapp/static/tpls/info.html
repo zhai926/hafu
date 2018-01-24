@@ -1,0 +1,136 @@
+		<link rel="stylesheet" type="text/css" href="../css/normalize.css"/>
+		<script src="../js/jquery-2.1.4.min.js" type="text/javascript" charset="utf-8"></script>
+		 <script type="text/javascript">
+		 //var sex = 2;
+		 $(function(){
+		 	/* if(sex == 1){
+			    	$('.number').css("background-color","#9ED7EA");
+			    	$('.alertBox .txt h3 span').css('color','#9ED7EA');
+				}else{
+//					$('.number').css("background-color","#EB5F5E");
+				} */
+				var r=  window.location.search;
+				var data = r.split('?');
+				var voiceNum = data[1].split("=")[1];
+				$('.txt .number').html(voiceNum);
+				$.getJSON("/index/getBaseInfo",function(data){
+					var gender = data.ob.sex;
+					if(gender == "男"){
+				    	$('.number').css("background-color","#9ED7EA");
+				    	$('.alertBox .txt h3 span').css('color','#9ED7EA');
+					}else{
+						$('.number').css("background-color","#EB5F5E");
+					}
+					var relations = data.ob.relations;
+					$('.txt #relations').html(relations);
+					var avater = data.ob.avater;
+					if(avater != null){
+						$('.photo img').attr('src',avater);
+					}
+				});
+		 })
+		 function goToVoice(){
+			 //alert("***进入点击事件");
+			 window.parent.location.href="/voice/voice";
+		 }
+		 	
+		 </script>
+		<style type="text/css">
+			/****警告****/
+			.alertBox{
+				width: 100%;
+				height: 100%;
+				z-index: 1000;
+				padding-top: 30px;
+				box-sizing: border-box;
+			}
+			.alertBox .photo{
+				width: 100%;
+				height: 35%;
+				text-align: center;
+			}
+			.alertBox .photo div{
+				display: block;
+				width: 7em;
+				height: 7em;
+				margin: 0 auto;
+				border: 3px solid #CCCCCC;
+				overflow: hidden;
+				border-radius: 50%;
+			}
+			.alertBox .photo div img{
+				width: 100%;
+				height: auto;
+			}
+			.alertBox .txt{
+				width: 70%;
+				margin: 0 auto;
+				box-sizing: border-box;
+				position: relative;
+				text-align: center;
+			}
+			.alertBox .txt .number{
+				position: absolute;
+				right: 13%;
+				top: 30%;
+				display: block;
+				min-width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				background-color: #EB5F5E;
+				text-align: center;
+				line-height: 40px;
+				font-size: 24px;
+				color: white;
+				
+			}
+			.alertBox .txt img{
+				width: 100%;
+				height: auto;
+			}
+			.alertBox .txt h3{
+				font-size: 24px;
+				font-weight: 400;
+				padding-top:5px;
+			}
+			.alertBox .txt h3 b{
+			   font-weight:100;
+			   border-bottom:1px solid #ddd;
+			}
+			.alertBox .txt h3 span{
+				color: #EB5F5E;
+			}
+			.sex{
+				display: inline-block;
+			    height: 15px;
+			    width: 15px;
+			    margin-bottom: -2px;
+			   /*background-image: url(../images/arrow/woman.png);*/
+			    background-repeat: no-repeat;
+			    background-position: center center;
+			    background-size: 90% auto;
+			}
+			
+			.red{
+				color: red;
+				font-size: 20px;
+				display: block;
+				margin: 0 auto;
+				text-align: center;
+				text-decoration: underline;
+				padding: 15px 0 10px 0 ;
+			}
+		</style>
+<div class="alertBox">
+ <div class="photo">
+	 <div><img src="../images/man.png" /></div>
+	 <!--<span>妈妈<i class="sex"></i></span>-->
+ </div> 
+ <div class="txt"> 
+		<img src="../images/arrow/info.png" onclick="goToVoice()"/>
+		<span class="number">10</span>
+		<h3>您收到了<span id="relations">妈妈</span>的</br><b>语音消息</b></h3>
+		
+	 </div> 
+	 <input type="hidden" id="userGender" value="${sessionScope.CurrentUser.gender}">
+ </div>

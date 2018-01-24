@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hafu.repository.mybatis.HfCheckDataMybatisDao">
+	<resultMap type="com.hafu.entity.HfCheckData" id="checkMap">
+		<id column="id" property="id" jdbcType="DECIMAL"/>
+		<result column="user_id" property="userId" jdbcType="DECIMAL"/>
+		<result column="check_category" property="checkCategory" jdbcType="VARCHAR"/>
+		<result column="check_type" property="checkType" jdbcType="VARCHAR"/>
+		<result column="check_data" property="checkData" jdbcType="VARCHAR"/>
+		<result column="check_date" property="checkDate" jdbcType="TIMESTAMP"/>
+		<result column="check_address" property="checkAddress" jdbcType="VARCHAR"/>
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+		<result column="delete_flag" property="deleteFlag" jdbcType="DECIMAL"/>
+		<result column="dicItemName" property="dicItemName" jdbcType="VARCHAR"/>
+	</resultMap>
+	<select id="indexLastCheck" resultMap="checkMap" parameterType="java.util.Map">
+		
+		select * from 
+		(
+			select c.*,t.dic_item_Name as dicItemName from hf_check_data c left join hf_dic_item t on c.check_type=t.dic_item_code 
+			<where> c.user_id=#{userId} and c.delete_flag=0 </where>order by c.check_date desc
+		) tt
+		GROUP BY tt.check_type
+	</select>
+<insert id="insert" useGeneratedKeys="true" parameterType="com.hafu.entity.HfCheckData">  
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">  
+        SELECT  
+        LAST_INSERT_ID()  
+    </selectKey>  
+    insert into hf_check_data ( user_id, check_category, 
+      check_type, check_data, check_date, 
+      check_address, create_date, delete_flag,code
+      )
+    values
+        ( #{userId}, #{checkCategory}, 
+      #{checkType}, #{checkData}, #{checkDate}, 
+      #{checkAddress}, #{createDate}, #{deleteFlag},#{code})  
+</insert>
+<insert id="insertBatch" useGeneratedKeys="true" parameterType="java.util.List">  
+    <selectKey resultType="java.lang.Long" keyProperty="id" order="AFTER">  
+        SELECT  
+        LAST_INSERT_ID()  
+    </selectKey>  
+    insert into hf_check_data ( user_id, check_category, 
+      check_type, check_data, check_date, 
+      check_address, create_date, delete_flag,code
+      )
+    values
+    <foreach collection="list" item="item" index="index" separator="," >  
+        ( #{item.userId}, #{item.checkCategory}, 
+      #{item.checkType}, #{item.checkData}, #{item.checkDate}, 
+      #{item.checkAddress}, #{item.createDate}, #{item.deleteFlag},#{item.code})  
+    </foreach>  
+</insert>
+
+<update id="updateBatch" parameterType="java.util.List">  
+    <foreach collection="list" item="item" index="index" open="" close="" separator=";">
+            update hf_check_data
+		    <set >
+		      <if test="item.checkData != null" >
+		        check_data = #{item.checkData},
+		      </if>
+		      <if test="item.checkDate!= null" >
+		        check_date = #{item.checkDate},
+		      </if>
+		    </set>
+		    where id = #{item.id}
+        </foreach> 
+</update>
+
+	<select id="findByUserIdType" resultMap="checkMap" parameterType="java.util.Map">
+		select * from hf_check_data where id =(SELECT max(id) FROM hf_check_data
+		<where>
+			<if test="userId!=null">
+				and user_id = #{userId}
+			</if>
+			<if test="checkType!=null and checkType!=''">
+				and check_type = #{checkType}
+			</if>
+			<if test="beginTime!=null and beginTime!=''">
+				<![CDATA[and check_date >= #{beginTime}]]>
+			</if>
+			<if test="endTime!=null and endTime!=''">
+				<![CDATA[and check_date <= #{endTime}]]>
+			</if>
+		</where>
+		order by check_date desc
+		)
+	</select>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hafu.repository.mybatis.HfAlertMybatisDao">
+	<resultMap type="com.hafu.entity.HfAlert" id="alertMap">
+		<id column="id" property="id" jdbcType="DECIMAL"/>
+		<result column="user_id" property="userId" jdbcType="DECIMAL"/>
+		<result column="code" property="code" jdbcType="VARCHAR"/>
+		<result column="nick_name" property="nickName" jdbcType="VARCHAR"/>
+		<result column="longitude" property="longitude" jdbcType="VARCHAR"/>
+		<result column="latitude" property="latitude" jdbcType="VARCHAR"/>
+		<result column="content" property="content" jdbcType="VARCHAR"/>
+		<result column="alert_type" property="alertType" jdbcType="VARCHAR"/>
+		<result column="alert_date" property="alertDate" jdbcType="TIMESTAMP"/>
+		<result column="position" property="position" jdbcType="VARCHAR"/>
+		<result column="delete_flag" property="deleteFlag" jdbcType="DECIMAL"/>
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP"/>
+		<result column="read_status" property="readStatus" jdbcType="DECIMAL"/>
+		<result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+	</resultMap>
+	<!-- 未读报警记录  -->
+	<select id="listAlert" resultMap="alertMap" parameterType="java.util.Map">
+		select alert.id as id,case when ua.read_status is null then 0 else ua.read_status end as read_status  ,
+		alert.alert_date as alert_date,alert.alert_type as alert_type ,alert.code as code,
+		alert.content as content,alert.create_date as create_date,alert.delete_flag as delete_flag,
+		alert.latitude as latitude ,alert.longitude as longitude,(select nick_name from hf_concern_user where concern_user_id=#{currentUserId} and user_id=#{userId}) as nick_name,
+		alert.position as position ,alert.user_id as user_id,(select mobile from hf_user where id= #{userId}) as mobile
+		from hf_alert alert left join hf_user_alert ua on alert.id=ua.alert_id 
+		where alert.code like #{code} and alert.delete_flag=0 and case when ua.concern_user_id is null then true 
+		else ua.concern_user_id=#{currentUserId} end and case when ua.read_status is null then true else ua.read_status in
+		<foreach collection="status" index="index" open="(" separator="," close=")" item="item">
+			#{item}
+		</foreach>
+		 end
+		 <if test="today!=null">
+		 	and alert.alert_date &gt; #{today}
+		 </if>
+		 order by alert.alert_date desc limit 10 ;
+	</select>
+	<select id="selectById" resultMap="alertMap" parameterType="java.lang.Integer">
+		select * from hf_alert where id = #{id}
+	</select>
+</mapper>

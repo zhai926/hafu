@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hafu.repository.mybatis.HfPromptMybatisDao">
+	<resultMap type="com.hafu.entity.HfPrompt" id="promptMap">
+		<id column="id" property="id" jdbcType="DECIMAL" />
+		<result column="user_id" property="userId" jdbcType="DECIMAL" />
+		<result column="hour" property="hour" jdbcType="DECIMAL" />
+		<result column="minute" property="minute" jdbcType="DECIMAL" />
+		<result column="code" property="code" jdbcType="VARCHAR" />
+		<result column="is_prompt" property="isPrompt" jdbcType="DECIMAL" />
+		<result column="prompt_type" property="promptType" jdbcType="DECIMAL" />
+		<result column="loop_string" property="loopString" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+		<result column="cron_expression" property="cronExpression"
+			jdbcType="VARCHAR" />
+		<result column="update_date" property="updateDate" jdbcType="TIMESTAMP" />
+		<result column="create_date" property="createDate" jdbcType="TIMESTAMP" />
+		<result column="delete_flag" property="deleteFlag" jdbcType="DECIMAL" />
+		<result column="repeat_type" property="repeatType" jdbcType="DECIMAL" />
+	</resultMap>
+	<select id="listPrompt" resultMap="promptMap" parameterType="java.util.Map">
+		select * from hf_prompt
+		where case prompt_type when 1 then create_date>=#{today} else true end
+		and code like #{code} and delete_flag=0
+	</select>
+</mapper>

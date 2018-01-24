@@ -1,0 +1,95 @@
+/****************首页男性的样式*****************/
+.footer {
+	
+}
+.footer .foot-left{
+	background-color:#DEEDF2;
+}
+.footer .foot-middle{
+	background-color:#9ED7EA;
+}
+.color-change{
+	background-color:rgb(64, 134, 196) !important;
+}
+.footer{
+	background-color:#4086C4 ;
+}
+.footer .footer-list{
+	background-color: rgba(64, 134, 196,0.7);
+}
+.steps{
+	background-color:#F1F6F9;
+}
+.range{
+	background-color:#DEEDF0;
+}
+.range span{
+	background-color: #4F92C6;
+}
+.step-con h3 span {
+	color: #4F92C6;
+}
+.steps .today-step .num{
+	color: #A8D9EA;
+}
+.steps .joy{
+	color:#747474;
+}
+.steps .joy span{
+	color: #A8D9EA;
+}
+.information .infor-right a{
+	color: #747474;
+}
+.information {
+	color: #A8D9EA;
+}
+.information .infor-left ul li i{
+	background-color: #9ED7EA;
+}
+.information .infor-left ul li:after{
+	border-color:  transparent transparent transparent  #A8D9EA;
+}
+
+.reset span{
+	background: url(../images/arrow/set2.png) no-repeat center 0.05rem;
+	background-size: 95% auto;
+	color: #498ABE;
+}
+.photo .sex{
+	background: url(../images/arrow/man.png) no-repeat center center;
+	background-size: 70% 70%;
+}
+.infor-right .hert{
+	background: url(../images/arrow/hert2.png) no-repeat center top;
+	background-size: 20px auto;
+}
+.infor-right .good{
+	background: url(../images/arrow/good2.png) no-repeat center top;
+	background-size: 20px auto;
+}
+.left-nav{
+ 	background-color: #4086C4;	
+}
+.stepList span{
+	 color: #9ED7EA;
+}
+.moreData{
+	color:#9ED7EA;
+	margin-top: 0.4rem;
+	text-decoration: underline !important;
+}
+.menu-wrap{
+   background:#9DD7EB;
+}
+.active-con .active-pie .sex{
+	background: url(../images/arrow/man.png) no-repeat center center;
+    background-size: 70% 70%;
+}
+.select {
+	background-color: #9CD5DB;
+	color: white !important;
+}
+.step-title .nav li{
+	border:1px solid #9CD5DB;
+}

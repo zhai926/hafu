@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/hafu_common/hafu_common.iml" filepath="$PROJECT_DIR$/hafu_common/hafu_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hafu_parent.iml" filepath="$PROJECT_DIR$/hafu_parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hafu_service/hafu_service.iml" filepath="$PROJECT_DIR$/hafu_service/hafu_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/hafu_weixin/hafu_weixin.iml" filepath="$PROJECT_DIR$/hafu_weixin/hafu_weixin.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hafu.repository.mybatis.HfLoveMybatisDao">
+	<resultMap type="com.hafu.entity.HfLove" id="HfLoveMap">
+		<id column="id" property="id" jdbcType="DECIMAL"/>
+		<result column="content" property="content" jdbcType="VARCHAR"/>
+		<result column="loveType" property="loveType" jdbcType="DECIMAL"/>
+	</resultMap>
+	   
+	    <!-- 保存到数据库    爱的类型(0:代表关爱一下 1:代表照顾爸妈 2:关爱提醒 3:代表传递思念  4:代表自定义)-->
+	    <insert id="insertHappiness" parameterType="com.hafu.entity.HfLove">
+	       INSERT into hf_love(content,loveType) values(#{content},#{LoveType})
+	    </insert>   
+	    
+	     <!--根据类型编号 查询关爱信息 --> 
+	    <select id="getLove" resultMap="HfLoveMap" parameterType="java.lang.Integer">
+	         SELECT * from  hf_love where loveType=#{loveType}
+	    </select>   
+</mapper>

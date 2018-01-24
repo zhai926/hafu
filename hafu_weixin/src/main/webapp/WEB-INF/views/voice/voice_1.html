@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<!--meta name="viewport" content="width=device-width, initial-scale=1"-->
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0;" name="viewport" />
+<title>无标题文档</title>
+<link href="css/bootstrap.min.css" rel="stylesheet">
+<!--左侧滑出样式-->
+<link rel="stylesheet" type="text/css" href="css/normalize.css" />
+<link rel="stylesheet" type="text/css" href="css/demo.css" />
+<link rel="stylesheet" type="text/css" href="css/menu_elastic.css" />
+<script src="js/snap.svg-min.js"></script>
+<!--左侧滑出样式over-->
+<link href="css/css.css" rel="stylesheet">
+</head>
+
+<body>
+<div class="container containerStyle1">
+  <div class="menu-wrap">
+	<div class="openLeftBK">
+                  <div class="leftMember clear">
+                    <div class="leftManPic"><img src="images/man.jpg"></div>
+                    <div class="leftManMsg">
+                    <h2>叔叔<span class="nowColor">当前显示</span></h2>
+                    设备号：184558128514855
+                    </div>
+                  </div>
+				  <div class="openLeftBK2">
+<dl class="linkedTitle">
+           	<dt>已绑定设备列表</dt>
+            <dd><img src="images/man.jpg"><span>妈妈</span> 设备号：184558128514855</dd>
+            <dd><img src="images/man.jpg"><span>妈妈</span> 设备号：184558128514855</dd>
+            <dd><img src="images/man.jpg"><span>妈妈</span> 设备号：184558128514855</dd>
+          </dl>
+            <div class="leftTitle">+添加新设备</div>
+            <div class="addLinkpp">
+              <div class="myLeft"><form><input name="" type="text" class="addInput"></form></div>
+              <div class="myRight ico"><img src="images/ico_ico7.png"></div>
+                  </div>
+                  <div class="leftCC">扫一扫绑定设备</div>
+                  </div>
+                  </div>
+	  <!--button class="close-button" id="close-button">Close Menu</button-->
+	  <div class="morph-shape" id="morph-shape" data-morph-open="M-1,0h101c0,0,0-1,0,395c0,404,0,405,0,405H-1V0z">
+					<svg xmlns="http://www.w3.org/2000/svg" width="100%" height="100%" viewBox="0 0 100 800" preserveAspectRatio="none">
+						<path d="M-1,0h101c0,0-97.833,153.603-97.833,396.167C2.167,627.579,100,800,100,800H-1V0z"/>
+					</svg>
+				</div>
+			</div>
+			<!--button class="menu-button" id="open-button">打开</button-->
+			<div class="content-wrap">
+			  <div class="content">
+              	<div class="fixMarTop"></div>
+                <div class="pagePadding fixSubMenu">
+                <!--  菜单的click样式，是表示，当前点击的按钮，加上click样式 背景变蓝色，字变白色  -->
+                	<ul class="pageMenuUL1">
+                    	<li class="alone w33">关爱提醒</li>
+                        <li class="alone w33">鼓励一下</li>
+                      <li class="alone w33 click">语音互动</li>
+                    </ul>
+                </div>
+			  </div>
+              
+              <ul class="ltUL">
+           	    <li><div class="rightMsg">起床了没有，吃了早饭没有,早饭吃的啥?</div></li>
+                <li><div class="rightMsg">今天准备去哪？</div></li>
+                <li><div class="leftMsg">吃了，去哪不告诉你吃了，去哪不告诉你吃了，去哪不告诉你吃了，去哪不告诉你吃了，去哪不告诉你吃了，去哪不告诉你吃了，去哪不告诉你吃了，去哪不告诉你吃了，去哪不告诉你吃了，去哪不告诉你！</div></li>
+                <li><div class="timeLine">星期五 1:14 PM</div></li>
+                <li><div class="rightMsg">走累了休息一下。注意安全。爱你爱你哦，也要注意身体哦。也要注意身体哦。</div></li>
+                <li><div class="leftMsg yy"><span></span><i>8''</i></div></li>
+                <li><div class="rightMsg yy"><span></span><i>12''</i></div></li>
+                <li><div class="rightMsg">起床了没有，吃了早饭没有,早饭吃的啥?</div></li>
+                <li><div class="rightMsg">今天准备去哪？</div></li>
+                <li><div class="leftMsg">吃了，去哪不告诉你！</div></li>
+                <li><div class="timeLine">星期五 1:14 PM</div></li>
+                <li><div class="rightMsg">走累了休息一下。注意安全。爱你爱你哦，也要注意身体哦。也要注意身体哦。</div></li>
+                <li><div class="leftMsg yy"><span></span><i>8''</i></div></li>
+                <li><div class="rightMsg yy"><span></span><i>12''</i></div></li>
+              </ul>
+              
+            </div><!-- /content-wrap -->
+            
+            
+  <div class="myNavbar">
+  <!-- 底部语音、打字的菜单 -->
+		   <div class="bottom_bar"  style="padding-bottom:4em;">
+           	  <div class="bottom_bar_left">
+           	    <div class="ico"  onClick="yyBarFun()"><img id="yyBarYY_pic" src="images/ico_jp.png"><img id="yyBarTT_pic" src="images/ico_jpyy.png" style="display:none"></div>
+           	  </div>
+              <div class="bottom_bar_right">
+              	<div id="yyBarYY" class="bottom_bar_yy">按住说话</div>
+              	<div id="yyBarTT" style="display:none"><input type="text" name="textfield" id="textfield" class="bottom_bar_input"></div>
+              </div>
+              <script>
+			  function yyBarFun(){
+				  var temObj=document.getElementById("yyBarYY_pic").style.display;
+					 if(temObj=="none"){
+						document.getElementById("yyBarTT_pic").style.display="none";
+						document.getElementById("yyBarTT").style.display="none";
+						document.getElementById("yyBarYY_pic").style.display="";
+						document.getElementById("yyBarYY").style.display="";
+					}else{
+						document.getElementById("yyBarTT_pic").style.display="";
+						document.getElementById("yyBarTT").style.display="";
+						document.getElementById("yyBarYY_pic").style.display="none";
+						document.getElementById("yyBarYY").style.display="none";
+					}
+				  /*var temObj=document.getElementById("yyBarTT").style.display;  
+				  if(temObj=="none"){
+					  alert(temObj);
+				  }
+				  */
+			  }
+			  
+			  </script>
+    </div>
+            <!-- 底部主菜单 如果不要主菜单，删除下面的ul -->
+		  <ul class="foot_menuUL">
+		    <li><a href="#" class="foot_ico1">数据中心</a></li>
+		    <li><a href="#" class="foot_ico2">关爱互动</a></li>
+		    <li class="foot_centerLogo"><a href="#" class="foot_logo">福</a></li>
+		    <li><a href="#" class="foot_ico3">哈福服务</a></li>
+		    <li><a href="#" class="foot_ico4"  id="open-button">我的设置</a></li>
+	      </ul>
+  </div>
+        
+</div><!-- /container -->
+
+		<script src="js/classie.js"></script>
+		<script src="js/main3.js"></script>
+
+		<script src="js/jquery.min.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+</body>
+</html>
